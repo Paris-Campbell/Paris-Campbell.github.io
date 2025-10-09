@@ -73,7 +73,7 @@
 
 
         // Every 50 milliseconds, call the update Function (see below)
-        setInterval(update, 50);
+        var interval = setInterval(update, 50);
 
 
 
@@ -82,6 +82,11 @@
         box.on("click", handleBoxClick);
         var colorStr = "rgb(210, 180, 140)";
         box.css("background-color", colorStr);
+        misClicks++;
+        if(misClicks >= 10){
+          endGame();
+          alert("Game Over! Too many missed click.");
+        }
 
 
 
@@ -98,9 +103,17 @@
         function changeBoxText(newText) {
           box.text(newText);
         }
-
-
-
+        //put random colors for box each time its clicked
+        function getRandomColor(){
+          var r = Math.random() * 255;
+          var g = Math.random() * 255;
+          var b = Math.random() * 255;
+          return "rgb("+ r +", "+ g +", "+ b +")";
+        }
+        function endGame(){
+          clearInterval(interval);
+        }
+      
 
         //////////////////////////////////////////////////////////////////
         /////////////////// YOUR CODE BELOW HERE /////////////////////////
@@ -117,7 +130,8 @@
          var speedY = 10;
          var boardHeight = jQuery(window).height();
          var randNum = Math.random() * 100;
-
+         var colorStr = "rgb(50,25,250)";
+         var misClicks = 0;
 
 
 
@@ -163,6 +177,18 @@
                changeBoxText(points);
                points++;
                speed += 3
+               box.css("background-color", getRandomColor());
+               if (points % 3 === 0) {
+                box.css("background-color", getRandomColor());
+                speed = speed + 2;
+               }
+               
+              misClicks = 0;
+              updateMisClicks();
+              event.stopPropagation();
+
+
+
          }
          
        
